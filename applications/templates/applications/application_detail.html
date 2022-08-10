@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Application #{{ application.id }}
+{% endblock %}
+
+{% block content %}
+    {% if user.is_superuser %}
+        {% include "applications/include/.application_active_admin.html" %}
+    {% else %}
+        {% include "applications/include/.application.html" %}
+    {% endif %}
+{% endblock %}

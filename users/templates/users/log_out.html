@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Log Out
+{% endblock %}
+
+{% block content %}
+    <h4>Logged out</h4>
+
+    <p>Thanks for spending some time with the site today.</p>
+
+    <p>
+        <a href="{% url "log_in" %}">Log in again</a>
+    </p>
+{% endblock %}

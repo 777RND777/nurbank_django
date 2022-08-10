@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    User List
+{% endblock %}
+
+{% block content %}
+    {% if users|length > 0 %}
+        <ul>
+            {% for user_info in users %}
+                <li>
+                    id: <a href="{% url "user" user_info.slug %}">{{ user_info.id }}</a><br>
+                    {% include "users/include/.user.html" %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No users.
+    {% endif %}
+{% endblock %}

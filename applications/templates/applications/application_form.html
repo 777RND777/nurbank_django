@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Create Application
+{% endblock %}
+
+{% block content %}
+    <h4>Create Application</h4>
+
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-success">Create</button>
+    </form>
+{% endblock %}

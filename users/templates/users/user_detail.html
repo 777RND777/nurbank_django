@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ user_info.username }}
+{% endblock %}
+
+{% block content %}
+    {% include "users/include/.user.html" %}
+{% endblock %}

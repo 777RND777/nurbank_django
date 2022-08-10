@@ -1,0 +1,19 @@
+<a href="{% url "application" application.pk %}">#{{ application.pk }}</a><br>
+
+{% if application.value > 0 %}
+    Value: {{ application.value }}<br>
+    Type: loan<br>
+{% else %}
+    Value: {{ application.value|stringformat:"d"|slice:"1:" }}<br>
+    Type: payment<br>
+{% endif %}
+
+Request Date: {{ application.request_date }}<br>
+
+{% if application.answer_date == None %}
+    Answer Date: -<br>
+{% else %}
+    Answer Date: {{ application.answer_date }}<br>
+{% endif %}
+
+Approved: {{ application.approved }}<br>

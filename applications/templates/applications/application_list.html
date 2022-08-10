@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Application List
+{% endblock %}
+
+{% block content %}
+    {% if applications|length > 0 %}
+
+        <ul>
+            {% for application in applications %}
+                <li>
+                    {% if user.is_superuser %}
+                        {% include "applications/include/.application_active_admin.html" %}
+                    {% else %}
+                        {% include "applications/include/.application.html" %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        No applications.
+    {% endif %}
+{% endblock %}
