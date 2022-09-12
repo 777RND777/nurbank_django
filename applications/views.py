@@ -18,6 +18,7 @@ class UserApplicationListView(LoginRequiredMixin, ListView):
     model = Application
     template_name = "applications/application_list.html"
     context_object_name = "applications"
+    paginate_by = 5
 
 
 class ApplicationDetailView(LoginRequiredMixin, DetailView):
@@ -82,6 +83,7 @@ class ApplicationActiveListView(AdminOnlyView, ListView):
     model = Application
     template_name = "applications/application_list.html"
     context_object_name = "applications"
+    paginate_by = 5
 
     def get_queryset(self):
         return Application.objects.filter(answer_date=None).all()

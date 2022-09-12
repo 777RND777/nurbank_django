@@ -83,3 +83,5 @@ class UserListView(AdminOnlyView, ListView):
     model = User
     template_name = "users/user_list.html"
     context_object_name = "users"
+    paginate_by = 5
+
