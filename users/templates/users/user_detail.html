@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    {% include "users/include/.user.html" %}
+    {% if user.is_superuser %}
+        {% include "users/include/.user_admin.html" %}
+    {% else %}
+        {% include "users/include/.user.html" %}
+    {% endif %}
 {% endblock %}

@@ -19,6 +19,8 @@ class ApplicationList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         if not self.request.user.is_superuser:
             return models.Application.objects.filter(user_id=self.request.user.pk)
+        if self.request.GET.get("username"):
+            return models.Application.objects.filter(user__username=self.request.GET.get("username"))
         return models.Application.objects.all()
 
 

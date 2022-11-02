@@ -7,3 +7,5 @@ First Name: {{ user_info.first_name }}<br>
 Last Name: {{ user_info.last_name }}<br>
 
 Debt: {{ user_info.debt }}<br>
+
+<a href="{% url "application_list" %}?username={{ user_info.username }}">Application History</a>

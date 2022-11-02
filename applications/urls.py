@@ -1,8 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 urlpatterns = [
-    path("", views.ApplicationList.as_view(), name="application_list"),
+    re_path(r"(?:username=(?P<username>\w{0,50})/)?$", views.ApplicationList.as_view(), name="application_list"),
     path("active", views.ApplicationActiveList.as_view(), name="application_active_list"),
 
     path("cancel", views.ApplicationCancel.as_view(), name="application_cancel"),
