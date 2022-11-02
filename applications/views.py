@@ -16,11 +16,10 @@ class UserApplicationList(LoginRequiredMixin, ListView):
     context_object_name = "applications"
     paginate_by = 5
 
-
-class ApplicationDetail(LoginRequiredMixin, DetailView):
-    model = models.Application
-    template_name = "applications/application_detail.html"
-    context_object_name = "application"
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return models.Application.objects.all()
+        return models.Application.objects.filter(user_id=self.request.user.pk)
 
 
 class ApplicationForm(LoginRequiredMixin, FormView):
@@ -73,6 +72,12 @@ class ApplicationCancel(LoginRequiredMixin, View):
         except exceptions.ApplicationIsNotActive:
             messages.error(request, "You do not have an active application.")
         return redirect(settings.LOGIN_REDIRECT_URL)
+
+
+class ApplicationDetail(AdminOnlyMixin, DetailView):
+    model = models.Application
+    template_name = "applications/application_detail.html"
+    context_object_name = "application"
 
 
 class ApplicationActiveList(AdminOnlyMixin, ListView):
