@@ -1,6 +1,6 @@
-<a href="{% url "application" application.pk %}">#{{ application.pk }}</a><br>
+<a href="{% url "application_detail" application.pk %}">#{{ application.pk }}</a><br>
 
-User: <a href="{% url "user" application.user.slug %}">{{ application.user }}</a><br>
+User: <a href="{% url "user_detail" application.user.slug %}">{{ application.user }}</a><br>
 
 Value: {{ application.value }}<br>
 

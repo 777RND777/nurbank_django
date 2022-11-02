@@ -9,7 +9,7 @@
         <ul>
             {% for user_info in users %}
                 <li>
-                    id: <a href="{% url "user" user_info.slug %}">{{ user_info.id }}</a><br>
+                    id: <a href="{% url "user_detail" user_info.slug %}">{{ user_info.id }}</a><br>
                     {% include "users/include/.user.html" %}
                 </li>
             {% endfor %}

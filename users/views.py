@@ -77,6 +77,13 @@ class UserDetail(LoginRequiredMixin, DetailView):
     template_name = "users/user_detail.html"
     context_object_name = "user_info"
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            user: models.User = self.request.user
+            if user.slug != kwargs.get('slug'):
+                return redirect("user_detail", slug=user.slug)
+        return super().dispatch(request, args, kwargs)
+
 
 class UserList(AdminOnlyMixin, ListView):
     model = models.User

@@ -1,4 +1,4 @@
-<a href="{% url "application" application.pk %}">#{{ application.pk }}</a><br>
+<a href="{% url "application_detail" application.pk %}">#{{ application.pk }}</a><br>
 
 {% if application.value > 0 %}
     Value: {{ application.value }}<br>
