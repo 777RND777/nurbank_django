@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  server:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DEBUG: "false"
+      SQL_ENGINE: "django.db.backends.postgresql"
+      SQL_DATABASE: "databaseName"
+      SQL_USER: "yourPostgresUsername"
+      SQL_PASSWORD: "yourPassword"
+      SQL_HOST: "db"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "databaseName"
+      POSTGRES_USER: "yourPostgresUsername"
+      POSTGRES_PASSWORD: "yourPassword"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
