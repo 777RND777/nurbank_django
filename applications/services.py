@@ -2,48 +2,45 @@ from typing import Callable
 
 from django.utils import timezone
 
-from .forms import ApplicationForm
-from .models import Application, User
+from . import exceptions, forms, models
 
 
-def create_application_from_form(form: ApplicationForm, user: User) -> None:
+def create_application_from_form(form: forms.ApplicationForm, user: models.User) -> None:
     application = form.save(commit=False)
     application.user = user
     application.save()
 
 
-def is_application_active(application: Application):
+def is_application_active(application: models.Application):
     return application and application.answer_date is None
 
 
-def get_last_user_application(user: User):
+def get_last_user_application(user: models.User):
     return user.applications.first()
 
 
-def cancel_application(user: User) -> bool:
+def cancel_application(user: models.User) -> None:
     application = get_last_user_application(user)
     if not is_application_active(application):
-        return False
+        raise exceptions.ApplicationIsNotActive
 
     application.answer_date = timezone.now()
     application.save()
-    return True
 
 
-def check_if_application_is_active(func: Callable[[Application], None]) -> Callable[[int], bool]:
-    def inner(application_id: int) -> bool:
-        application = Application.objects.get(pk=application_id)
+def check_if_application_is_active(func: Callable[[models.Application], None]) -> Callable[[int], None]:
+    def inner(application_id: int) -> None:
+        application = models.Application.objects.get(pk=application_id)
         if not is_application_active(application):
-            return False
+            raise exceptions.ApplicationIsNotActive
 
         func(application)
-        return True
 
     return inner
 
 
 @check_if_application_is_active
-def approve_application(application: Application) -> None:
+def approve_application(application: models.Application) -> None:
     application.answer_date = timezone.now()
     application.approved = True
     application.save()
@@ -54,6 +51,6 @@ def approve_application(application: Application) -> None:
 
 
 @check_if_application_is_active
-def decline_application(application: Application) -> None:
+def decline_application(application: models.Application) -> None:
     application.answer_date = timezone.now()
     application.save()

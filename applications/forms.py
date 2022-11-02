@@ -2,12 +2,12 @@ from django import forms
 from django.conf import settings
 from django.forms import ValidationError
 
-from .models import Application
+from . import models
 
 
 class ApplicationForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['value']
 
     def clean_value(self):

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LogoutView as BaseLogOutView
+from django.contrib.auth.views import LogoutView
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -9,25 +9,24 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import DetailView, FormView, ListView, View
 
-from .forms import LogInForm, RegisterForm
-from .models import User
+from . import forms, models
 
 
-class HomeView(View):
+class Home(View):
     @staticmethod
     def get(request):
         return render(request, "users/home.html")
 
 
-class GuestOnlyView(View):
+class GuestOnlyMixin(View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(settings.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
 
 
-class LogInView(GuestOnlyView, FormView):
-    form_class = LogInForm
+class LogIn(GuestOnlyMixin, FormView):
+    form_class = forms.LogInForm
     template_name = "users/log_in.html"
 
     @method_decorator(sensitive_post_parameters('password'))
@@ -49,9 +48,9 @@ class LogInView(GuestOnlyView, FormView):
         return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-class RegisterView(GuestOnlyView, FormView):
+class Register(GuestOnlyMixin, FormView):
     template_name = "users/register.html"
-    form_class = RegisterForm
+    form_class = forms.RegisterForm
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -62,26 +61,25 @@ class RegisterView(GuestOnlyView, FormView):
         return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-class LogOutView(LoginRequiredMixin, BaseLogOutView):
+class LogOut(LoginRequiredMixin, LogoutView):
     pass
 
 
-class AdminOnlyView(LoginRequiredMixin, View):
+class AdminOnlyMixin(LoginRequiredMixin, View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect(settings.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
+class UserDetail(LoginRequiredMixin, DetailView):
+    model = models.User
     template_name = "users/user_detail.html"
     context_object_name = "user_info"
 
 
-class UserListView(AdminOnlyView, ListView):
-    model = User
+class UserList(AdminOnlyMixin, ListView):
+    model = models.User
     template_name = "users/user_list.html"
     context_object_name = "users"
     paginate_by = 5
-

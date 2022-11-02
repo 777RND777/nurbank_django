@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ValidationError
 
-from .models import User
+from . import models
 
 
 class UserCacheMixin:
@@ -16,7 +16,7 @@ class LogInForm(UserCacheMixin, forms.Form):
     def clean_username(self):
         username = self.cleaned_data['username']
 
-        user = User.objects.filter(username=username).first()
+        user = models.User.objects.filter(username=username).first()
         if not user:
             raise ValidationError("You entered an invalid username.")
 
@@ -38,13 +38,13 @@ class LogInForm(UserCacheMixin, forms.Form):
 
 class RegisterForm(UserCreationForm):
     class Meta:
-        model = User
+        model = models.User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
 
     def clean_username(self):
         username = self.cleaned_data['username']
 
-        user = User.objects.filter(username=username).first()
+        user = models.User.objects.filter(username=username).first()
         if user:
             raise ValidationError("You can not use this username.")
 

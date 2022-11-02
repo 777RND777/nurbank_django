@@ -1,0 +1,2 @@
+class ApplicationIsNotActive(BaseException):
+    pass
