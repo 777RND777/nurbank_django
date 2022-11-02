@@ -6,7 +6,7 @@
 
 {% block content %}
     {% if user.is_superuser %}
-        {% include "applications/include/.application_active_admin.html" %}
+        {% include "applications/include/.application_admin.html" %}
     {% else %}
         {% include "applications/include/.application.html" %}
     {% endif %}

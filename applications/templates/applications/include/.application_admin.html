@@ -1,0 +1,12 @@
+<a href="{% url "application_detail" application.pk %}">#{{ application.pk }}</a><br>
+
+User: <a href="{% url "user_detail" application.user.slug %}">{{ application.user }}</a><br>
+
+Value: {{ application.value }}<br>
+
+Request Date: {{ application.request_date }}<br>
+
+{% if not application.answer_date %}
+    <a href="{% url "application_approve" application.pk %}"><button type="button" class="btn btn-success">Approve</button></a>
+    <a href="{% url "application_decline" application.pk %}"><button type="button" class="btn btn-danger">Decline</button></a>
+{% endif %}

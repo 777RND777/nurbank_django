@@ -10,16 +10,16 @@ from . import exceptions, forms, models, services
 from users.views import AdminOnlyMixin
 
 
-class UserApplicationList(LoginRequiredMixin, ListView):
+class ApplicationList(LoginRequiredMixin, ListView):
     model = models.Application
     template_name = "applications/application_list.html"
     context_object_name = "applications"
     paginate_by = 5
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Application.objects.all()
-        return models.Application.objects.filter(user_id=self.request.user.pk)
+        if not self.request.user.is_superuser:
+            return models.Application.objects.filter(user_id=self.request.user.pk)
+        return models.Application.objects.all()
 
 
 class ApplicationForm(LoginRequiredMixin, FormView):
